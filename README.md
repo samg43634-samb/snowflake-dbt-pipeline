@@ -283,3 +283,5 @@ complete command reference.
   read at runtime via ADF's managed identity — never typed into a
   linked service definition or committed anywhere (see
   `adf/linkedServices/LS_KeyVault.json`).
+
+<!-- testing CI -->
