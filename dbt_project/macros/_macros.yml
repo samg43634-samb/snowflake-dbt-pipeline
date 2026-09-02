@@ -1,0 +1,32 @@
+version: 2
+
+macros:
+  - name: customer_tier_discount_pct
+    description: >
+      Returns the standard discount percentage for a given customer tier
+      column. Centralizes a business rule (GOLD=10%, SILVER=5%,
+      BRONZE/other=0%) so every model that needs it applies it
+      identically instead of re-implementing the CASE statement.
+    arguments:
+      - name: tier_column
+        type: string
+        description: "SQL expression (typically a column reference) evaluating to a customer tier."
+
+  - name: abc_class
+    description: >
+      Classic ABC/Pareto classification from a running cumulative-revenue
+      percentage: 'A' for the products making up the first 80% of
+      revenue, 'B' for the next 15%, 'C' for the remainder.
+    arguments:
+      - name: cumulative_pct_column
+        type: string
+        description: "SQL expression evaluating to a cumulative revenue share between 0 and 1."
+
+  - name: generate_schema_name
+    description: >
+      Overrides dbt's default schema naming. In the dev target, prefixes
+      every schema with the developer's warehouse username so multiple
+      developers can run against the shared dev database without
+      colliding. In test/prod, uses the plain schema name from
+      dbt_project.yml. See Environment Strategy & Promotion Process for
+      the full explanation.

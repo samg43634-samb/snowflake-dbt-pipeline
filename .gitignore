@@ -1,0 +1,28 @@
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+dbt_project/package-lock.yml
+
+# Never commit real credentials -- profiles.yml.sample is a template only.
+# The real ~/.dbt/profiles.yml lives outside this repo, or credentials
+# come from environment variables / GitHub Actions secrets.
+profiles.yml
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+sql_server/
+
+adf/
+
+sql_server/
+
+adf/

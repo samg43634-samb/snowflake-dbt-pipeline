@@ -1,0 +1,28 @@
+name: 'sales_pipeline'
+version: '1.0.0'
+config-version: 2
+
+profile: 'sales_pipeline'
+
+model-paths: ["models"]
+snapshot-paths: ["snapshots"]
+seed-paths: ["seeds"]
+test-paths: ["tests"]
+macro-paths: ["macros"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  sales_pipeline:
+    staging:
+      +materialized: view
+      +schema: stage_sm
+    intermediate:
+      +materialized: view
+      +schema: intermediate_sm
+    marts:
+      +materialized: table
+      +schema: marts

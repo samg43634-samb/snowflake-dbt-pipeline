@@ -1,0 +1,28 @@
+version: 2
+
+sources:
+  - name: raw
+    database: ANALYTICS_DB
+    schema: RAW_SM
+    description: >
+      Historical, append-only landing tables loaded by Azure Data Factory
+      from the SQL Server source system (see adf/ for the real pipeline;
+      snowflake/02_load_sample_data.sql for a fast, no-infrastructure
+      stand-in used while developing the dbt project). A business key can
+      legitimately appear more than once here -- deduping down to one
+      current row per key is the staging layer's job, not RAW_SM's.
+      dbt never touches the source system or ADF directly; RAW_SM is the
+      only contract between ingestion and transformation.
+    loaded_at_field: LOAD_TIMESTAMP
+    freshness:
+      warn_after: {count: 26, period: hour}
+      error_after: {count: 50, period: hour}
+    tables:
+      - name: customers
+        identifier: CUSTOMERS
+      - name: products
+        identifier: PRODUCTS
+      - name: orders
+        identifier: ORDERS
+      - name: order_lines
+        identifier: ORDER_LINES
