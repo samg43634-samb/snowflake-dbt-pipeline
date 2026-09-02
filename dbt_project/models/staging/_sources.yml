@@ -2,7 +2,6 @@ version: 2
 
 sources:
   - name: raw
-    database: ANALYTICS_DB
     schema: RAW_SM
     description: >
       Historical, append-only landing tables loaded by Azure Data Factory
