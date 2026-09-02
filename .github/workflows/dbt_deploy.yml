@@ -1,0 +1,96 @@
+name: dbt Deploy
+
+# GitFlow-style: which branch you push to (or merge into) IS the deploy
+# trigger for that specific environment. Code physically moves
+# dev -> test -> main via PRs; this workflow just deploys whatever
+# lands on each branch to its matching Snowflake environment.
+on:
+  push:
+    branches: [dev, test, main]
+    paths:
+      - 'dbt_project/**'
+  schedule:
+    - cron: '0 2 * * *'   # nightly prod refresh, independent of code changes
+  workflow_dispatch:
+    inputs:
+      target:
+        description: 'Environment to deploy manually'
+        required: true
+        type: choice
+        options: [dev, test, prod]
+
+concurrency:
+  group: dbt-deploy-${{ github.ref_name }}
+  cancel-in-progress: false   # never cancel a deploy mid-flight
+
+jobs:
+  # ------------------------------------------------------------------
+  deploy-dev:
+    if: >
+      github.ref == 'refs/heads/dev' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'dev')
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dbt_project
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt build --target dev
+        env:
+          DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+          DBT_SNOWFLAKE_DEV_USER: ${{ secrets.DBT_SNOWFLAKE_DEV_USER }}
+          DBT_SNOWFLAKE_DEV_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_DEV_PASSWORD }}
+
+  # ------------------------------------------------------------------
+  deploy-test:
+    if: >
+      github.ref == 'refs/heads/test' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'test')
+    runs-on: ubuntu-latest
+    environment: test
+    defaults:
+      run:
+        working-directory: dbt_project
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt build --target test
+        env:
+          DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+          DBT_SNOWFLAKE_CI_USER: ${{ secrets.DBT_SNOWFLAKE_CI_USER }}
+          DBT_SNOWFLAKE_CI_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_CI_PASSWORD }}
+
+  # ------------------------------------------------------------------
+  deploy-prod:
+    if: >
+      github.ref == 'refs/heads/main' ||
+      github.event_name == 'schedule' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
+    runs-on: ubuntu-latest
+    environment: production   # can require manual approval before this runs
+    defaults:
+      run:
+        working-directory: dbt_project
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt build --target prod
+      - run: dbt docs generate --target prod
+        env:
+          DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+          DBT_SNOWFLAKE_PROD_USER: ${{ secrets.DBT_SNOWFLAKE_PROD_USER }}
+          DBT_SNOWFLAKE_PROD_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_PROD_PASSWORD }}

@@ -1,0 +1,86 @@
+name: dbt PR Check
+
+# The base branch of the PR tells us which environment to validate
+# against: a PR into dev checks against dev, a PR into test checks
+# against test, and a PR into main (promoting test -> prod) gets a
+# final check against test again -- not prod. Prod only ever gets
+# built by dbt_deploy.yml's deploy-prod job, triggered by the actual
+# merge, never by a PR check. That keeps "did this pass its check"
+# and "is this now live in prod" as two clearly separate events.
+on:
+  pull_request:
+    branches: [dev, test, main]
+    paths:
+      - 'dbt_project/**'
+
+concurrency:
+  group: dbt-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  # ------------------------------------------------------------------
+  check-into-dev:
+    if: github.base_ref == 'dev'
+    runs-on: ubuntu-latest
+    environment: dev
+    defaults:
+      run:
+        working-directory: dbt_project
+    env:
+      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+      DBT_SNOWFLAKE_DEV_USER: ${{ secrets.DBT_SNOWFLAKE_DEV_USER }}
+      DBT_SNOWFLAKE_DEV_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_DEV_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt debug --target dev
+      - run: dbt build --target dev
+
+  # ------------------------------------------------------------------
+  check-into-test:
+    if: github.base_ref == 'test'
+    runs-on: ubuntu-latest
+    environment: test
+    defaults:
+      run:
+        working-directory: dbt_project
+    env:
+      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+      DBT_SNOWFLAKE_CI_USER: ${{ secrets.DBT_SNOWFLAKE_CI_USER }}
+      DBT_SNOWFLAKE_CI_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_CI_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt debug --target test
+      - run: dbt build --target test
+      - run: dbt source freshness --target test
+        continue-on-error: true   # informational only; never fails the PR
+
+  # ------------------------------------------------------------------
+  check-into-main:
+    if: github.base_ref == 'main'
+    runs-on: ubuntu-latest
+    environment: test   # final gate re-validates against test, not prod
+    defaults:
+      run:
+        working-directory: dbt_project
+    env:
+      DBT_SNOWFLAKE_ACCOUNT: ${{ secrets.DBT_SNOWFLAKE_ACCOUNT }}
+      DBT_SNOWFLAKE_CI_USER: ${{ secrets.DBT_SNOWFLAKE_CI_USER }}
+      DBT_SNOWFLAKE_CI_PASSWORD: ${{ secrets.DBT_SNOWFLAKE_CI_PASSWORD }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install dbt-snowflake
+      - run: dbt deps
+      - run: dbt build --target test
