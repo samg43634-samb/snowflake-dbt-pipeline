@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE RAW_SM.CUSTOMERS (
+CREATE TABLE IF NOT EXISTS RAW_SM.CUSTOMERS (
     CustomerId      INT,
     CustomerCode    STRING,
     CustomerName    STRING,
