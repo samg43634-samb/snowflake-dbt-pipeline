@@ -4,6 +4,8 @@ on:
   push:
     branches: [dev, test, main]
     paths:
+      - 'snowflake/deploy_manifest.txt'
+      - 'snowflake/seed_manifest.txt'
       - 'snowflake/01_schemas_and_grants.sql'
       - 'snowflake/raw_sm/tables/**'
       - 'snowflake/raw_sm/seed_data/**'
@@ -15,7 +17,7 @@ on:
         type: choice
         options: [dev, test, prod]
       include_seed_data:
-        description: 'Also load seed_data (never do this for prod)'
+        description: 'Also load seed_manifest.txt (never do this for prod)'
         required: false
         type: boolean
         default: false
@@ -38,54 +40,24 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_DEV
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
 
-      - name: Determine changed Snowflake files
-        id: changed
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manually triggered -- running every file."
-            echo "run_all=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_all=false" >> "$GITHUB_OUTPUT"
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
-            echo "Changed files in this push:"
-            cat /tmp/changed_files.txt
-          fi
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            python scripts/deploy_snowflake_sql.py "$f"
+          done < snowflake/deploy_manifest.txt
 
-      - name: Schemas and grants
+      - name: Deploy seed data (seed_manifest.txt)
         run: |
-          FILE=snowflake/01_schemas_and_grants.sql
-          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
-            python scripts/deploy_snowflake_sql.py "$FILE"
-          else
-            echo "Unchanged, skipping: $FILE"
-          fi
-
-      - name: Tables
-        run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
-            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
-              python scripts/deploy_snowflake_sql.py "$f"
-            else
-              echo "Unchanged, skipping: $f"
-            fi
-          done
-
-      - name: Seed data
-        run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
-            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
-              python scripts/deploy_snowflake_sql.py "$f"
-            else
-              echo "Unchanged, skipping: $f"
-            fi
-          done
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            python scripts/deploy_snowflake_sql.py "$f"
+          done < snowflake/seed_manifest.txt
 
   deploy-test:
     if: >
@@ -100,54 +72,24 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_TEST
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
 
-      - name: Determine changed Snowflake files
-        id: changed
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manually triggered -- running every file."
-            echo "run_all=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_all=false" >> "$GITHUB_OUTPUT"
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
-            echo "Changed files in this push:"
-            cat /tmp/changed_files.txt
-          fi
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            python scripts/deploy_snowflake_sql.py "$f"
+          done < snowflake/deploy_manifest.txt
 
-      - name: Schemas and grants
+      - name: Deploy seed data (seed_manifest.txt)
         run: |
-          FILE=snowflake/01_schemas_and_grants.sql
-          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
-            python scripts/deploy_snowflake_sql.py "$FILE"
-          else
-            echo "Unchanged, skipping: $FILE"
-          fi
-
-      - name: Tables
-        run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
-            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
-              python scripts/deploy_snowflake_sql.py "$f"
-            else
-              echo "Unchanged, skipping: $f"
-            fi
-          done
-
-      - name: Seed data
-        run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
-            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
-              python scripts/deploy_snowflake_sql.py "$f"
-            else
-              echo "Unchanged, skipping: $f"
-            fi
-          done
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            python scripts/deploy_snowflake_sql.py "$f"
+          done < snowflake/seed_manifest.txt
 
   deploy-prod:
     if: >
@@ -162,48 +104,22 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_PROD
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
 
-      - name: Determine changed Snowflake files
-        id: changed
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            echo "Manually triggered -- running every file."
-            echo "run_all=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "run_all=false" >> "$GITHUB_OUTPUT"
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
-            echo "Changed files in this push:"
-            cat /tmp/changed_files.txt
-          fi
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
+            python scripts/deploy_snowflake_sql.py "$f"
+          done < snowflake/deploy_manifest.txt
 
-      - name: Schemas and grants
-        run: |
-          FILE=snowflake/01_schemas_and_grants.sql
-          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
-            python scripts/deploy_snowflake_sql.py "$FILE"
-          else
-            echo "Unchanged, skipping: $FILE"
-          fi
-
-      - name: Tables
-        run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
-            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
-              python scripts/deploy_snowflake_sql.py "$f"
-            else
-              echo "Unchanged, skipping: $f"
-            fi
-          done
-
-      - name: Seed data (only if explicitly requested)
+      - name: Deploy seed data (seed_manifest.txt) -- only if explicitly requested
         if: ${{ inputs.include_seed_data == true }}
         run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
+          done < snowflake/seed_manifest.txt
