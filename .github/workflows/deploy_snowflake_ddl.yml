@@ -38,21 +38,53 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_DEV
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
+
+      - name: Determine changed Snowflake files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manually triggered -- running every file."
+            echo "run_all=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_all=false" >> "$GITHUB_OUTPUT"
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
+            echo "Changed files in this push:"
+            cat /tmp/changed_files.txt
+          fi
+
       - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+        run: |
+          FILE=snowflake/01_schemas_and_grants.sql
+          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
+            python scripts/deploy_snowflake_sql.py "$FILE"
+          else
+            echo "Unchanged, skipping: $FILE"
+          fi
+
       - name: Tables
         run: |
           for f in snowflake/raw_sm/tables/*.sql; do
-            python scripts/deploy_snowflake_sql.py "$f"
+            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
+              python scripts/deploy_snowflake_sql.py "$f"
+            else
+              echo "Unchanged, skipping: $f"
+            fi
           done
+
       - name: Seed data
         run: |
           for f in snowflake/raw_sm/seed_data/*.sql; do
-            python scripts/deploy_snowflake_sql.py "$f"
+            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
+              python scripts/deploy_snowflake_sql.py "$f"
+            else
+              echo "Unchanged, skipping: $f"
+            fi
           done
 
   deploy-test:
@@ -68,21 +100,53 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_TEST
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
+
+      - name: Determine changed Snowflake files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manually triggered -- running every file."
+            echo "run_all=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_all=false" >> "$GITHUB_OUTPUT"
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
+            echo "Changed files in this push:"
+            cat /tmp/changed_files.txt
+          fi
+
       - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+        run: |
+          FILE=snowflake/01_schemas_and_grants.sql
+          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
+            python scripts/deploy_snowflake_sql.py "$FILE"
+          else
+            echo "Unchanged, skipping: $FILE"
+          fi
+
       - name: Tables
         run: |
           for f in snowflake/raw_sm/tables/*.sql; do
-            python scripts/deploy_snowflake_sql.py "$f"
+            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
+              python scripts/deploy_snowflake_sql.py "$f"
+            else
+              echo "Unchanged, skipping: $f"
+            fi
           done
+
       - name: Seed data
         run: |
           for f in snowflake/raw_sm/seed_data/*.sql; do
-            python scripts/deploy_snowflake_sql.py "$f"
+            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
+              python scripts/deploy_snowflake_sql.py "$f"
+            else
+              echo "Unchanged, skipping: $f"
+            fi
           done
 
   deploy-prod:
@@ -98,17 +162,45 @@ jobs:
       SNOWFLAKE_DATABASE: ANALYTICS_DB_PROD
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
+
+      - name: Determine changed Snowflake files
+        id: changed
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "Manually triggered -- running every file."
+            echo "run_all=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run_all=false" >> "$GITHUB_OUTPUT"
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > /tmp/changed_files.txt
+            echo "Changed files in this push:"
+            cat /tmp/changed_files.txt
+          fi
+
       - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+        run: |
+          FILE=snowflake/01_schemas_and_grants.sql
+          if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$FILE" /tmp/changed_files.txt 2>/dev/null; then
+            python scripts/deploy_snowflake_sql.py "$FILE"
+          else
+            echo "Unchanged, skipping: $FILE"
+          fi
+
       - name: Tables
         run: |
           for f in snowflake/raw_sm/tables/*.sql; do
-            python scripts/deploy_snowflake_sql.py "$f"
+            if [ "${{ steps.changed.outputs.run_all }}" = "true" ] || grep -qxF "$f" /tmp/changed_files.txt 2>/dev/null; then
+              python scripts/deploy_snowflake_sql.py "$f"
+            else
+              echo "Unchanged, skipping: $f"
+            fi
           done
+
       - name: Seed data (only if explicitly requested)
         if: ${{ inputs.include_seed_data == true }}
         run: |
