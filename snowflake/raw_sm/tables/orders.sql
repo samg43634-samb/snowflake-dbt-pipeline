@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE RAW_SM.ORDERS (
+CREATE TABLE IF NOT EXISTS RAW_SM.ORDERS (
     OrderId         INT,
     OrderNumber     STRING,
     CustomerId      INT,

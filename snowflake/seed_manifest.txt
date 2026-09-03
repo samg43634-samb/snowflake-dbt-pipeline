@@ -1,0 +1,10 @@
+# Seed data manifest -- run in this exact order, after deploy_manifest.txt.
+# Blank lines and lines starting with # are ignored.
+# In prod, these only run when a manual deploy explicitly requests it
+# (include_seed_data) -- see the workflow file. dev and test always run
+# this manifest.
+
+snowflake/raw_sm/seed_data/customers_seed.sql
+snowflake/raw_sm/seed_data/products_seed.sql
+snowflake/raw_sm/seed_data/orders_seed.sql
+snowflake/raw_sm/seed_data/order_lines_seed.sql
