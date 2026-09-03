@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE RAW_SM.PRODUCTS (
+CREATE TABLE IF NOT EXISTS RAW_SM.PRODUCTS (
     ProductId       INT,
     ProductCode     STRING,
     ProductName     STRING,

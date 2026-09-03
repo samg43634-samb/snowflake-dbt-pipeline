@@ -1,4 +1,4 @@
-CREATE OR REPLACE TABLE RAW_SM.ORDER_LINES (
+CREATE TABLE IF NOT EXISTS RAW_SM.ORDER_LINES (
     OrderLineId     INT,
     OrderId         INT,
     ProductId       INT,

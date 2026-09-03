@@ -4,6 +4,8 @@ on:
   push:
     branches: [dev, test, main]
     paths:
+      - 'snowflake/deploy_manifest.txt'
+      - 'snowflake/seed_manifest.txt'
       - 'snowflake/01_schemas_and_grants.sql'
       - 'snowflake/raw_sm/tables/**'
       - 'snowflake/raw_sm/seed_data/**'
@@ -15,7 +17,7 @@ on:
         type: choice
         options: [dev, test, prod]
       include_seed_data:
-        description: 'Also load seed_data (never do this for prod)'
+        description: 'Also load seed_manifest.txt (never do this for prod)'
         required: false
         type: boolean
         default: false
@@ -42,18 +44,20 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-      - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
-      - name: Tables
+
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
-      - name: Seed data
+          done < snowflake/deploy_manifest.txt
+
+      - name: Deploy seed data (seed_manifest.txt)
         run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
+          done < snowflake/seed_manifest.txt
 
   deploy-test:
     if: >
@@ -72,18 +76,20 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-      - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
-      - name: Tables
+
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
-      - name: Seed data
+          done < snowflake/deploy_manifest.txt
+
+      - name: Deploy seed data (seed_manifest.txt)
         run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
+          done < snowflake/seed_manifest.txt
 
   deploy-prod:
     if: >
@@ -102,16 +108,18 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-      - name: Schemas and grants
-        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
-      - name: Tables
+
+      - name: Deploy schemas and tables (deploy_manifest.txt)
         run: |
-          for f in snowflake/raw_sm/tables/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
-      - name: Seed data (only if explicitly requested)
+          done < snowflake/deploy_manifest.txt
+
+      - name: Deploy seed data (seed_manifest.txt) -- only if explicitly requested
         if: ${{ inputs.include_seed_data == true }}
         run: |
-          for f in snowflake/raw_sm/seed_data/*.sql; do
+          while IFS= read -r f; do
+            [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
-          done
+          done < snowflake/seed_manifest.txt
