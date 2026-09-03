@@ -1,0 +1,232 @@
+==================== 2026-09-02T15:49:12.033227Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T15:49:12.033356Z | 61902030-7b21-4fe8-9f05-c950bc5e5aed ====================
+15:49:12.033378 [info ]: Starting dbt LSP server
+15:49:12.033395 [info ]: Connecting to LSP client on port 53515
+15:49:12.033655 [info ]: Successfully connected to LSP client
+15:49:12.033675 [info ]: Creating LSP service...
+15:49:12.034463 [info ]: Creating LSP server...
+15:49:12.034476 [info ]: Starting LSP server...
+==================== 2026-09-02T15:49:12.619972Z | 927efe4d-4df1-4c2d-b6b2-5434c2fc0ee4 ====================
+15:49:12.620076 [info ]: Started loading project
+15:49:12.620124 [info ]: Finished loading project [  0.00s]
+15:49:12.620185 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+15:49:12.620233 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [260us]
+==================== 2026-09-02T15:49:57.165055Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T15:49:57.165178Z | ee5e002d-7f70-4bae-a650-5d51c3153f29 ====================
+15:49:57.165209 [info ]: Starting dbt LSP server
+15:49:57.165230 [info ]: Connecting to LSP client on port 35601
+15:49:57.165418 [info ]: Successfully connected to LSP client
+15:49:57.165438 [info ]: Creating LSP service...
+15:49:57.166181 [info ]: Creating LSP server...
+15:49:57.166195 [info ]: Starting LSP server...
+==================== 2026-09-02T15:49:57.929433Z | 3468186f-8914-48d3-94a2-04f42ff488e5 ====================
+15:49:57.929556 [info ]: Started loading project
+15:49:57.929634 [info ]: Finished loading project [  0.00s]
+15:49:57.929689 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+15:49:57.929737 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [303us]
+==================== 2026-09-02T15:51:13.328627Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T15:51:13.328752Z | d8fd7f30-e491-4ec2-b0d4-db6a098e4191 ====================
+15:51:13.328774 [info ]: Starting dbt LSP server
+15:51:13.328792 [info ]: Connecting to LSP client on port 60913
+15:51:13.329020 [info ]: Successfully connected to LSP client
+15:51:13.329043 [info ]: Creating LSP service...
+15:51:13.329889 [info ]: Creating LSP server...
+15:51:13.329904 [info ]: Starting LSP server...
+==================== 2026-09-02T15:51:14.245322Z | 3100ac89-4c1f-47c4-bf51-33739ba80791 ====================
+15:51:14.245444 [info ]: Started loading project
+15:51:14.245509 [info ]: Finished loading project [  0.00s]
+15:51:14.245580 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+15:51:14.245633 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [311us]
+==================== 2026-09-02T15:57:59.667134Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T15:57:59.667258Z | 77123d4d-8867-4a8a-9b4f-1156b45e4e6e ====================
+15:57:59.667287 [info ]: Starting dbt LSP server
+15:57:59.667307 [info ]: Connecting to LSP client on port 58163
+15:57:59.667547 [info ]: Successfully connected to LSP client
+15:57:59.667574 [info ]: Creating LSP service...
+15:57:59.668628 [info ]: Creating LSP server...
+15:57:59.668643 [info ]: Starting LSP server...
+==================== 2026-09-02T15:58:00.247364Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T15:58:00.247489Z | ca70dd95-be09-414b-9bf3-9baba3b5147b ====================
+15:58:00.247510 [info ]: Starting dbt LSP server
+15:58:00.247526 [info ]: Connecting to LSP client on port 53199
+15:58:00.247755 [info ]: Successfully connected to LSP client
+15:58:00.247774 [info ]: Creating LSP service...
+15:58:00.248521 [info ]: Creating LSP server...
+15:58:00.248534 [info ]: Starting LSP server...
+==================== 2026-09-02T15:58:00.259960Z | 1480c677-1cd6-4cf7-97f2-f0788948cd85 ====================
+15:58:00.260067 [info ]: Started loading project
+15:58:00.260128 [info ]: Finished loading project [  0.00s]
+15:58:00.260192 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+15:58:00.260233 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [272us]
+==================== 2026-09-02T15:58:00.819885Z | c598f4a5-93c8-4805-bf88-7a918c4b0d96 ====================
+15:58:00.819960 [info ]: Started loading project
+15:58:00.820034 [info ]: Finished loading project [  0.00s]
+15:58:00.820093 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+15:58:00.820139 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [254us]
+==================== 2026-09-02T16:04:42.304214Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:04:42.304343Z | 1d7aeabe-07eb-44b7-9fb3-b1b143c02598 ====================
+16:04:42.304364 [info ]: Starting dbt LSP server
+16:04:42.304385 [info ]: Connecting to LSP client on port 51187
+16:04:42.304613 [info ]: Successfully connected to LSP client
+16:04:42.304634 [info ]: Creating LSP service...
+16:04:42.305388 [info ]: Creating LSP server...
+16:04:42.305400 [info ]: Starting LSP server...
+==================== 2026-09-02T16:04:42.879978Z | 3dfae0cc-e8b7-48c5-8d29-4716928e9cd2 ====================
+16:04:42.880093 [info ]: Started loading project
+16:04:42.880162 [info ]: Finished loading project [  0.00s]
+16:04:42.880227 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:04:42.880270 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [292us]
+==================== 2026-09-02T16:04:43.118092Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:04:43.118221Z | 39fec17b-c24e-42b1-bcc4-1db5ae694e55 ====================
+16:04:43.118243 [info ]: Starting dbt LSP server
+16:04:43.118259 [info ]: Connecting to LSP client on port 60445
+16:04:43.118486 [info ]: Successfully connected to LSP client
+16:04:43.118506 [info ]: Creating LSP service...
+16:04:43.119510 [info ]: Creating LSP server...
+16:04:43.119523 [info ]: Starting LSP server...
+==================== 2026-09-02T16:04:43.720152Z | 1c457796-187f-4034-b827-b01a7f22f1d7 ====================
+16:04:43.720231 [info ]: Started loading project
+16:04:43.720299 [info ]: Finished loading project [  0.00s]
+16:04:43.720355 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:04:43.720399 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [246us]
+==================== 2026-09-02T16:16:46.201940Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:16:46.202073Z | 6bab2377-dc20-428d-9650-9fe7ad6b7063 ====================
+16:16:46.202095 [info ]: Starting dbt LSP server
+16:16:46.202113 [info ]: Connecting to LSP client on port 55469
+16:16:46.202380 [info ]: Successfully connected to LSP client
+16:16:46.202399 [info ]: Creating LSP service...
+16:16:46.203176 [info ]: Creating LSP server...
+16:16:46.203192 [info ]: Starting LSP server...
+==================== 2026-09-02T16:16:46.800120Z | bd474584-a187-4867-a0f0-d7e26d4c6164 ====================
+16:16:46.800257 [info ]: Started loading project
+16:16:46.800337 [info ]: Finished loading project [  0.00s]
+16:16:46.800401 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:16:46.800462 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [341us]
+==================== 2026-09-02T16:17:45.319599Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:17:45.319728Z | 23cb6138-3c95-4035-92ec-51daa7c49cee ====================
+16:17:45.319750 [info ]: Starting dbt LSP server
+16:17:45.319768 [info ]: Connecting to LSP client on port 55705
+16:17:45.319995 [info ]: Successfully connected to LSP client
+16:17:45.320016 [info ]: Creating LSP service...
+16:17:45.320931 [info ]: Creating LSP server...
+16:17:45.320945 [info ]: Starting LSP server...
+==================== 2026-09-02T16:17:45.900248Z | 170653a6-dce7-4b83-aaf0-1ab05e260023 ====================
+16:17:45.900381 [info ]: Started loading project
+16:17:45.900453 [info ]: Finished loading project [  0.00s]
+16:17:45.900522 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:17:45.900569 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [321us]
+==================== 2026-09-02T16:18:45.285707Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:18:45.285827Z | 30276b68-2823-480a-8a8b-d6843f1cbb34 ====================
+16:18:45.285849 [info ]: Starting dbt LSP server
+16:18:45.285867 [info ]: Connecting to LSP client on port 39629
+16:18:45.286104 [info ]: Successfully connected to LSP client
+16:18:45.286124 [info ]: Creating LSP service...
+16:18:45.286890 [info ]: Creating LSP server...
+16:18:45.286904 [info ]: Starting LSP server...
+==================== 2026-09-02T16:18:45.870252Z | fdbd8623-e43b-4eca-8a0f-de721df5602a ====================
+16:18:45.870367 [info ]: Started loading project
+16:18:45.870435 [info ]: Finished loading project [  0.00s]
+16:18:45.870490 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:18:45.870538 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [286us]
+==================== 2026-09-02T16:19:43.110878Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:19:43.111005Z | 453a76d2-468e-4c57-834c-48bd2b710b7b ====================
+16:19:43.111025 [info ]: Starting dbt LSP server
+16:19:43.111045 [info ]: Connecting to LSP client on port 49347
+16:19:43.111274 [info ]: Successfully connected to LSP client
+16:19:43.111295 [info ]: Creating LSP service...
+16:19:43.112055 [info ]: Creating LSP server...
+16:19:43.112068 [info ]: Starting LSP server...
+==================== 2026-09-02T16:19:43.760118Z | e6843bae-48e0-407f-9d72-ccee56f56ec5 ====================
+16:19:43.760198 [info ]: Started loading project
+16:19:43.760264 [info ]: Finished loading project [  0.00s]
+16:19:43.760325 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:19:43.760364 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [246us]
+==================== 2026-09-02T16:19:45.294180Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:19:45.294301Z | 856b9782-80df-4882-a0f2-6b160722554c ====================
+16:19:45.294322 [info ]: Starting dbt LSP server
+16:19:45.294337 [info ]: Connecting to LSP client on port 45965
+16:19:45.294586 [info ]: Successfully connected to LSP client
+16:19:45.294605 [info ]: Creating LSP service...
+16:19:45.295376 [info ]: Creating LSP server...
+16:19:45.295390 [info ]: Starting LSP server...
+==================== 2026-09-02T16:19:45.899993Z | 3adfa33d-b9d1-4e13-a880-fce72fe00b2f ====================
+16:19:45.900098 [info ]: Started loading project
+16:19:45.900145 [info ]: Finished loading project [  0.00s]
+16:19:45.900202 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:19:45.900249 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [256us]
+==================== 2026-09-02T16:19:59.890247Z | d5c953ee-2b46-4d55-89b7-9ce53a44e641 ====================
+16:19:59.890330 [info ]: Started loading project
+16:19:59.890400 [info ]: Finished loading project [  0.00s]
+16:19:59.890449 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:19:59.890488 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [240us]
+==================== 2026-09-02T16:20:45.374658Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:20:45.374783Z | 87d4a88b-0ea5-4aba-811a-0235be2bb6a1 ====================
+16:20:45.374805 [info ]: Starting dbt LSP server
+16:20:45.374826 [info ]: Connecting to LSP client on port 46173
+16:20:45.375090 [info ]: Successfully connected to LSP client
+16:20:45.375111 [info ]: Creating LSP service...
+16:20:45.375842 [info ]: Creating LSP server...
+16:20:45.375855 [info ]: Starting LSP server...
+==================== 2026-09-02T16:20:45.979971Z | 504dcbb1-c22b-4072-ab6b-ea3145c31755 ====================
+16:20:45.980068 [info ]: Started loading project
+16:20:45.980108 [info ]: Finished loading project [  0.00s]
+16:20:45.980167 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:20:45.980208 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [237us]
+==================== 2026-09-02T16:21:45.342366Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:21:45.342489Z | 5b1f879e-6227-4f2c-8687-fbab78d68161 ====================
+16:21:45.342509 [info ]: Starting dbt LSP server
+16:21:45.342530 [info ]: Connecting to LSP client on port 53223
+16:21:45.342775 [info ]: Successfully connected to LSP client
+16:21:45.342796 [info ]: Creating LSP service...
+16:21:45.343537 [info ]: Creating LSP server...
+16:21:45.343550 [info ]: Starting LSP server...
+==================== 2026-09-02T16:21:45.940045Z | da7ff34c-e419-4418-9511-11577e60816c ====================
+16:21:45.940152 [info ]: Started loading project
+16:21:45.940219 [info ]: Finished loading project [  0.00s]
+16:21:45.940275 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:21:45.940327 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [282us]
+==================== 2026-09-02T16:22:45.439932Z | 00000000-0000-0000-0000-000000000000 ====================
+==================== 2026-09-02T16:22:45.440055Z | ae7dda2f-db4b-481f-b5d4-de2308c53d98 ====================
+16:22:45.440076 [info ]: Starting dbt LSP server
+16:22:45.440096 [info ]: Connecting to LSP client on port 56697
+16:22:45.440340 [info ]: Successfully connected to LSP client
+16:22:45.440359 [info ]: Creating LSP service...
+16:22:45.441060 [info ]: Creating LSP server...
+16:22:45.441074 [info ]: Starting LSP server...
+==================== 2026-09-02T16:22:46.039973Z | 40709761-6aed-49b2-9616-649ab3a257db ====================
+16:22:46.040081 [info ]: Started loading project
+16:22:46.040123 [info ]: Finished loading project [  0.00s]
+16:22:46.040182 [error]: [IoError (dbt1001)]: Cannot open file /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: Failed to open file: /dbt_project/35e6d05a-ee2b-4490-9f06-bc2daf67e84e/dbt_project.yml: No such file or directory (os error 2): No such file or directory (os error 2)
+16:22:46.040231 [info ]: 
+==================== Execution Summary =====================
+Finished 'compile' with 1 error [258us]
