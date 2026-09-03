@@ -4,18 +4,18 @@ on:
   push:
     branches: [dev, test, main]
     paths:
-      - "snowflake/01_schemas_and_grants.sql"
-      - "snowflake/raw_sm/tables/**"
-      - "snowflake/raw_sm/seed_data/**"
+      - 'snowflake/01_schemas_and_grants.sql'
+      - 'snowflake/raw_sm/tables/**'
+      - 'snowflake/raw_sm/seed_data/**'
   workflow_dispatch:
     inputs:
       target:
-        description: "Environment to deploy against"
+        description: 'Environment to deploy against'
         required: true
         type: choice
         options: [dev, test, prod]
       include_seed_data:
-        description: "Also load seed_data (never do this for prod)"
+        description: 'Also load seed_data (never do this for prod)'
         required: false
         type: boolean
         default: false
@@ -27,8 +27,8 @@ concurrency:
 jobs:
   deploy-dev:
     if: >
-      github.ref == "refs/heads/dev" ||
-      (github.event_name == "workflow_dispatch" && inputs.target == "dev")
+      github.ref == 'refs/heads/dev' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'dev')
     runs-on: ubuntu-latest
     environment: dev
     env:
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
       - name: Schemas and grants
         run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
@@ -57,8 +57,8 @@ jobs:
 
   deploy-test:
     if: >
-      github.ref == "refs/heads/test" ||
-      (github.event_name == "workflow_dispatch" && inputs.target == "test")
+      github.ref == 'refs/heads/test' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'test')
     runs-on: ubuntu-latest
     environment: test
     env:
@@ -70,7 +70,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
       - name: Schemas and grants
         run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
@@ -87,8 +87,8 @@ jobs:
 
   deploy-prod:
     if: >
-      github.ref == "refs/heads/main" ||
-      (github.event_name == "workflow_dispatch" && inputs.target == "prod")
+      github.ref == 'refs/heads/main' ||
+      (github.event_name == 'workflow_dispatch' && inputs.target == 'prod')
     runs-on: ubuntu-latest
     environment: production
     env:
@@ -100,7 +100,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
       - name: Schemas and grants
         run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
