@@ -16,11 +16,6 @@ on:
         required: true
         type: choice
         options: [dev, test, prod]
-      include_seed_data:
-        description: 'Also load seed_manifest.txt (never do this for prod)'
-        required: false
-        type: boolean
-        default: false
 
 concurrency:
   group: snowflake-deploy-${{ github.ref_name }}
@@ -116,8 +111,7 @@ jobs:
             python scripts/deploy_snowflake_sql.py "$f"
           done < snowflake/deploy_manifest.txt
 
-      - name: Deploy seed data (seed_manifest.txt) -- only if explicitly requested
-        if: ${{ inputs.include_seed_data == true }}
+      - name: Deploy seed data (seed_manifest.txt)
         run: |
           while IFS= read -r f; do
             [[ -z "$f" || "$f" == \#* ]] && continue
