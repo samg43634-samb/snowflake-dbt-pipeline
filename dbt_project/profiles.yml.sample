@@ -1,49 +1,31 @@
-# Sample only -- goes in ~/.dbt/profiles.yml, not inside the project repo,
-# and is never committed to git. Credentials always come from environment
-# variables here, never hardcoded -- that's what makes it safe for this
-# same file shape to be reused by every developer and by CI.
-#
-# Three targets, one per environment. Which one runs is controlled entirely
-# by --target (or the DBT_TARGET env var in CI) -- the dbt code itself
-# never changes between environments, only which target it points at.
-
 sales_pipeline:
-  target: dev   # local default; CI always passes --target explicitly
+  target: dev
   outputs:
-
-    # ---- DEV: one developer, one sandbox schema, cheap warehouse ----
     dev:
       type: snowflake
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
       user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
-      password: "{{ env_var('DBT_SNOWFLAKE_PASSWORD') }}"
+      private_key_path: "{{ env_var('DBT_SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: TRANSFORMER
       database: ANALYTICS_DB_DEV
       warehouse: ANALYTICS_WH_DEV
-      # schema is intentionally NOT fixed here -- generate_schema_name.sql
-      # prefixes every schema with the developer's username, so ten
-      # developers running `dbt run --target dev` never collide.
       schema: dbt_dev
       threads: 4
-
-    # ---- TEST / CI: what pull requests build and test against ----
     test:
       type: snowflake
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
-      user: "{{ env_var('DBT_SNOWFLAKE_CI_USER') }}"
-      password: "{{ env_var('DBT_SNOWFLAKE_CI_PASSWORD') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('DBT_SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: TRANSFORMER
       database: ANALYTICS_DB_TEST
       warehouse: ANALYTICS_WH_TEST
       schema: dbt_test
       threads: 4
-
-    # ---- PROD: what the scheduled job and BI tools read ----
     prod:
       type: snowflake
       account: "{{ env_var('DBT_SNOWFLAKE_ACCOUNT') }}"
-      user: "{{ env_var('DBT_SNOWFLAKE_PROD_USER') }}"
-      password: "{{ env_var('DBT_SNOWFLAKE_PROD_PASSWORD') }}"
+      user: "{{ env_var('DBT_SNOWFLAKE_USER') }}"
+      private_key_path: "{{ env_var('DBT_SNOWFLAKE_PRIVATE_KEY_PATH') }}"
       role: TRANSFORMER
       database: ANALYTICS_DB_PROD
       warehouse: ANALYTICS_WH_PROD
