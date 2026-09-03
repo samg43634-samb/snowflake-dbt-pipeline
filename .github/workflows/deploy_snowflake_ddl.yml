@@ -1,0 +1,117 @@
+name: Deploy Snowflake DDL/DML
+
+on:
+  push:
+    branches: [dev, test, main]
+    paths:
+      - "snowflake/01_schemas_and_grants.sql"
+      - "snowflake/raw_sm/tables/**"
+      - "snowflake/raw_sm/seed_data/**"
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Environment to deploy against"
+        required: true
+        type: choice
+        options: [dev, test, prod]
+      include_seed_data:
+        description: "Also load seed_data (never do this for prod)"
+        required: false
+        type: boolean
+        default: false
+
+concurrency:
+  group: snowflake-deploy-${{ github.ref_name }}
+  cancel-in-progress: false
+
+jobs:
+  deploy-dev:
+    if: >
+      github.ref == "refs/heads/dev" ||
+      (github.event_name == "workflow_dispatch" && inputs.target == "dev")
+    runs-on: ubuntu-latest
+    environment: dev
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      SNOWFLAKE_DATABASE: ANALYTICS_DB_DEV
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install snowflake-connector-python cryptography
+      - name: Schemas and grants
+        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+      - name: Tables
+        run: |
+          for f in snowflake/raw_sm/tables/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
+      - name: Seed data
+        run: |
+          for f in snowflake/raw_sm/seed_data/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
+
+  deploy-test:
+    if: >
+      github.ref == "refs/heads/test" ||
+      (github.event_name == "workflow_dispatch" && inputs.target == "test")
+    runs-on: ubuntu-latest
+    environment: test
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      SNOWFLAKE_DATABASE: ANALYTICS_DB_TEST
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install snowflake-connector-python cryptography
+      - name: Schemas and grants
+        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+      - name: Tables
+        run: |
+          for f in snowflake/raw_sm/tables/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
+      - name: Seed data
+        run: |
+          for f in snowflake/raw_sm/seed_data/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
+
+  deploy-prod:
+    if: >
+      github.ref == "refs/heads/main" ||
+      (github.event_name == "workflow_dispatch" && inputs.target == "prod")
+    runs-on: ubuntu-latest
+    environment: production
+    env:
+      SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+      SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+      SNOWFLAKE_PRIVATE_KEY: ${{ secrets.SNOWFLAKE_PRIVATE_KEY }}
+      SNOWFLAKE_DATABASE: ANALYTICS_DB_PROD
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install snowflake-connector-python cryptography
+      - name: Schemas and grants
+        run: python scripts/deploy_snowflake_sql.py snowflake/01_schemas_and_grants.sql
+      - name: Tables
+        run: |
+          for f in snowflake/raw_sm/tables/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
+      - name: Seed data (only if explicitly requested)
+        if: ${{ inputs.include_seed_data == true }}
+        run: |
+          for f in snowflake/raw_sm/seed_data/*.sql; do
+            python scripts/deploy_snowflake_sql.py "$f"
+          done
