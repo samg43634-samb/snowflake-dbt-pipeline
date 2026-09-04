@@ -1,8 +1,16 @@
--- See stg_customers.sql for why the QUALIFY dedup is here: RAW_SM is
--- historical, so a product can appear more than once (e.g. a price change).
+{{
+    config(
+        materialized='incremental',
+        unique_key='product_id',
+        incremental_strategy='merge'
+    )
+}}
 
 with source as (
     select * from {{ source('raw', 'products') }}
+    {% if is_incremental() %}
+    where LOAD_TIMESTAMP > (select coalesce(max(load_timestamp), '1900-01-01') from {{ this }})
+    {% endif %}
 ),
 
 deduped as (
@@ -24,7 +32,8 @@ renamed as (
         UnitCost         as unit_cost,
         IsActive         as is_active,
         CreatedDate      as created_at,
-        ModifiedDate     as updated_at
+        ModifiedDate     as updated_at,
+        LOAD_TIMESTAMP   as load_timestamp
     from deduped
 )
 

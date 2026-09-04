@@ -1,7 +1,16 @@
--- See stg_customers.sql for why the QUALIFY dedup is here.
+{{
+    config(
+        materialized='incremental',
+        unique_key='order_line_id',
+        incremental_strategy='merge'
+    )
+}}
 
 with source as (
     select * from {{ source('raw', 'order_lines') }}
+    {% if is_incremental() %}
+    where LOAD_TIMESTAMP > (select coalesce(max(load_timestamp), '1900-01-01') from {{ this }})
+    {% endif %}
 ),
 
 deduped as (
@@ -22,7 +31,8 @@ renamed as (
         UnitPrice     as unit_price,
         LineTotal     as line_total,
         CreatedDate   as created_at,
-        ModifiedDate  as updated_at
+        ModifiedDate  as updated_at,
+        LOAD_TIMESTAMP as load_timestamp
     from deduped
 )
 
