@@ -5,10 +5,9 @@ on:
     branches: [dev, test, main]
     paths:
       - 'snowflake/deploy_manifest.txt'
-      - 'snowflake/seed_manifest.txt'
       - 'snowflake/01_schemas_and_grants.sql'
       - 'snowflake/raw_sm/tables/**'
-      - 'snowflake/raw_sm/seed_data/**'
+      - 'snowflake/raw_sm/sample_data/**'
   workflow_dispatch:
     inputs:
       target:
@@ -39,20 +38,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-
-      - name: Deploy schemas and tables (deploy_manifest.txt)
+      - name: Deploy (deploy_manifest.txt)
         run: |
           while IFS= read -r f; do
             [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
           done < snowflake/deploy_manifest.txt
-
-      - name: Deploy seed data (seed_manifest.txt)
-        run: |
-          while IFS= read -r f; do
-            [[ -z "$f" || "$f" == \#* ]] && continue
-            python scripts/deploy_snowflake_sql.py "$f"
-          done < snowflake/seed_manifest.txt
 
   deploy-test:
     if: >
@@ -71,20 +62,12 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-
-      - name: Deploy schemas and tables (deploy_manifest.txt)
+      - name: Deploy (deploy_manifest.txt)
         run: |
           while IFS= read -r f; do
             [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
           done < snowflake/deploy_manifest.txt
-
-      - name: Deploy seed data (seed_manifest.txt)
-        run: |
-          while IFS= read -r f; do
-            [[ -z "$f" || "$f" == \#* ]] && continue
-            python scripts/deploy_snowflake_sql.py "$f"
-          done < snowflake/seed_manifest.txt
 
   deploy-prod:
     if: >
@@ -103,17 +86,9 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install snowflake-connector-python cryptography
-
-      - name: Deploy schemas and tables (deploy_manifest.txt)
+      - name: Deploy (deploy_manifest.txt)
         run: |
           while IFS= read -r f; do
             [[ -z "$f" || "$f" == \#* ]] && continue
             python scripts/deploy_snowflake_sql.py "$f"
           done < snowflake/deploy_manifest.txt
-
-      - name: Deploy seed data (seed_manifest.txt)
-        run: |
-          while IFS= read -r f; do
-            [[ -z "$f" || "$f" == \#* ]] && continue
-            python scripts/deploy_snowflake_sql.py "$f"
-          done < snowflake/seed_manifest.txt
