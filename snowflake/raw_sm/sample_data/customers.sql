@@ -13,7 +13,7 @@ FROM (
 ) AS src(CustomerId, CustomerCode, CustomerName, Region, Country, CustomerTier, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.CUSTOMERS tgt
-    WHERE tgt.CustomerId = src.CustomerId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.CustomerId = src.CustomerId
 );
 
 INSERT INTO RAW_SM.CUSTOMERS (CustomerId, CustomerCode, CustomerName, Region, Country, CustomerTier, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
@@ -24,5 +24,11 @@ FROM (
 ) AS src(CustomerId, CustomerCode, CustomerName, Region, Country, CustomerTier, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.CUSTOMERS tgt
-    WHERE tgt.CustomerId = src.CustomerId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.CustomerId = src.CustomerId
 );
+
+UPDATE RAW_SM.CUSTOMERS
+SET IsActive = FALSE,
+    ModifiedDate = '2026-01-20'::TIMESTAMP_NTZ
+WHERE CustomerId NOT IN (1, 2, 3, 4, 5, 7, 8)
+  AND IsActive = TRUE;

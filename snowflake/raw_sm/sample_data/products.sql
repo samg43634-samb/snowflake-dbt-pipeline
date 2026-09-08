@@ -13,7 +13,7 @@ FROM (
 ) AS src(ProductId, ProductCode, ProductName, Category, UnitPrice, UnitCost, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.PRODUCTS tgt
-    WHERE tgt.ProductId = src.ProductId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.ProductId = src.ProductId
 );
 
 INSERT INTO RAW_SM.PRODUCTS (ProductId, ProductCode, ProductName, Category, UnitPrice, UnitCost, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
@@ -24,5 +24,11 @@ FROM (
 ) AS src(ProductId, ProductCode, ProductName, Category, UnitPrice, UnitCost, IsActive, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.PRODUCTS tgt
-    WHERE tgt.ProductId = src.ProductId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.ProductId = src.ProductId
 );
+
+UPDATE RAW_SM.PRODUCTS
+SET IsActive = FALSE,
+    ModifiedDate = '2026-01-20'::TIMESTAMP_NTZ
+WHERE ProductId NOT IN (101, 102, 103, 104, 105, 106, 108)
+  AND IsActive = TRUE;
