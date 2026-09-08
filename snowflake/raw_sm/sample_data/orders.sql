@@ -13,7 +13,7 @@ FROM (
 ) AS src(OrderId, OrderNumber, CustomerId, OrderDate, OrderStatus, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.ORDERS tgt
-    WHERE tgt.OrderId = src.OrderId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.OrderId = src.OrderId
 );
 
 INSERT INTO RAW_SM.ORDERS (OrderId, OrderNumber, CustomerId, OrderDate, OrderStatus, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
@@ -26,5 +26,5 @@ FROM (
 ) AS src(OrderId, OrderNumber, CustomerId, OrderDate, OrderStatus, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.ORDERS tgt
-    WHERE tgt.OrderId = src.OrderId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.OrderId = src.OrderId
 );

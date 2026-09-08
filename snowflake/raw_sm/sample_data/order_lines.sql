@@ -15,7 +15,7 @@ FROM (
 ) AS src(OrderLineId, OrderId, ProductId, Quantity, UnitPrice, LineTotal, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.ORDER_LINES tgt
-    WHERE tgt.OrderLineId = src.OrderLineId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.OrderLineId = src.OrderLineId
 );
 
 INSERT INTO RAW_SM.ORDER_LINES (OrderLineId, OrderId, ProductId, Quantity, UnitPrice, LineTotal, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
@@ -27,5 +27,5 @@ FROM (
 ) AS src(OrderLineId, OrderId, ProductId, Quantity, UnitPrice, LineTotal, CreatedDate, ModifiedDate, LOAD_TIMESTAMP, SOURCE_SYSTEM, OP_FLAG)
 WHERE NOT EXISTS (
     SELECT 1 FROM RAW_SM.ORDER_LINES tgt
-    WHERE tgt.OrderLineId = src.OrderLineId AND tgt.LOAD_TIMESTAMP = src.LOAD_TIMESTAMP
+    WHERE tgt.OrderLineId = src.OrderLineId
 );
