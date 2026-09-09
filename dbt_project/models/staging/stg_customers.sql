@@ -26,7 +26,7 @@ renamed as (
     select
         CustomerId          as customer_id,
         CustomerCode        as customer_code,
-        trim(CustomerName)  as customer_name,
+        trim(Customer)  as customer_name,
         upper(Region)       as region,
         Country             as country,
         upper(CustomerTier) as customer_tier,
@@ -34,6 +34,7 @@ renamed as (
         CreatedDate         as created_at,
         ModifiedDate        as updated_at,
         LOAD_TIMESTAMP      as load_timestamp
+        order_id            as order
     from deduped
 )
 
