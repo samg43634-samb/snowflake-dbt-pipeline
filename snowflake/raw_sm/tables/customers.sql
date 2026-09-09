@@ -10,5 +10,6 @@ CREATE TABLE IF NOT EXISTS RAW_SM.CUSTOMERS (
     ModifiedDate    TIMESTAMP_NTZ,
     LOAD_TIMESTAMP  TIMESTAMP_NTZ,
     SOURCE_SYSTEM   STRING,
-    OP_FLAG         STRING
+    OP_FLAG         STRING,
+    order_id        string
 );
